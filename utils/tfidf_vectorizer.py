@@ -25,7 +25,7 @@ def compute_idf(documents):
 
     for word in all_words:
         count = sum(1 for doc in documents if word in doc.split())
-        idf_dict[word] = math.log(N / (1 + count))
+        idf_dict[word] = math.log((1+N)/(1+count))+1
 
     return idf_dict
 

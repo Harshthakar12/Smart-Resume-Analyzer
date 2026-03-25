@@ -1,27 +1,34 @@
 from utils.text_extractor import extract_text
-from utils.text_preprocessor import preprocess_text
 from utils.tfidf_vectorizer import compute_tf, compute_idf, compute_tfidf
+from utils.similarity import cosine_similarity
+from utils.text_preprocessor import preprocess_text, remove_stopwords
+# Files
+resume_path = "data/sample_resume.txt"
+jd_path = "data/job_description.txt"
 
-file_path = "data/sample_resume.txt"
+# Extract
+resume_text = extract_text(resume_path)
+jd_text = extract_text(jd_path)
 
-# Step 1: Extract text
-text = extract_text(file_path)
+# Clean
+resume_clean = remove_stopwords(preprocess_text(resume_text))
+jd_clean = remove_stopwords(preprocess_text(jd_text))
 
-# Step 2: Clean text
-clean_text = preprocess_text(text)
+# Documents for IDF
+documents = [resume_clean, jd_clean]
 
-# Step 3: Prepare documents (for now only 1)
-documents = [clean_text]
+# TF
+tf_resume = compute_tf(resume_clean)
+tf_jd = compute_tf(jd_clean)
 
-# Step 4: Compute TF
-tf = compute_tf(clean_text)
-
-# Step 5: Compute IDF
+# IDF
 idf = compute_idf(documents)
 
-# Step 6: Compute TF-IDF
-tfidf = compute_tfidf(tf, idf)
+# TF-IDF
+tfidf_resume = compute_tfidf(tf_resume, idf)
+tfidf_jd = compute_tfidf(tf_jd, idf)
 
-print("----- TF-IDF Scores -----\n")
-for word, score in tfidf.items():
-    print(f"{word}: {score:.4f}")
+# Similarity
+score = cosine_similarity(tfidf_resume, tfidf_jd)
+
+print(f"\nATS Score: {round(score * 100, 2)}%")

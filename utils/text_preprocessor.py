@@ -22,3 +22,15 @@ def preprocess_text(text):
     clean_text = " ".join(filtered_words)
 
     return clean_text
+def remove_stopwords(text):
+    stopwords = {
+        "the", "is", "in", "and", "to", "for", "a", "of",
+        "with", "on", "at", "by", "an", "be", "this",
+        "that", "are", "as", "it", "from", "or",
+        "looking", "software", "engineer", "experience"
+    }
+
+    words = text.split()
+    filtered = [word for word in words if word not in stopwords]
+
+    return " ".join(filtered)
