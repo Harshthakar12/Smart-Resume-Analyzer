@@ -1,3 +1,4 @@
+from utils.skill_extractor import extract_skills
 from utils.text_extractor import extract_text
 from utils.tfidf_vectorizer import compute_tf, compute_idf, compute_tfidf
 from utils.similarity import cosine_similarity
@@ -31,4 +32,12 @@ tfidf_jd = compute_tfidf(tf_jd, idf)
 # Similarity
 score = cosine_similarity(tfidf_resume, tfidf_jd)
 
-print(f"\nATS Score: {round(score * 100, 2)}%")
+print(f"\nATS Score: {round(score * 100, 2)}%")\
+# Extract skills
+resume_skills = extract_skills(resume_clean)
+jd_skills = extract_skills(jd_clean)
+
+# Find missing skills
+missing_skills = jd_skills - resume_skills
+
+print("Missing Skills:", ", ".join(missing_skills))
