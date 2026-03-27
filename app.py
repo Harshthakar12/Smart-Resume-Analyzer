@@ -3,6 +3,21 @@ from utils.text_extractor import extract_text
 from utils.tfidf_vectorizer import compute_tf, compute_idf, compute_tfidf
 from utils.similarity import cosine_similarity
 from utils.text_preprocessor import preprocess_text, remove_stopwords
+# List of important skills
+skills_list = [
+    "python", "java", "react", "sql",
+    "machine learning", "data structures",
+    "system design", "backend"
+]
+def extract_skills(text):
+    found_skills = []
+    text = text.lower()
+    
+    for skill in skills_list:
+        if skill in text:
+            found_skills.append(skill)
+    
+    return found_skills
 # Files
 resume_path = "data/sample_resume.txt"
 jd_path = "data/job_description.txt"
@@ -32,12 +47,14 @@ tfidf_jd = compute_tfidf(tf_jd, idf)
 # Similarity
 score = cosine_similarity(tfidf_resume, tfidf_jd)
 
-print(f"\nATS Score: {round(score * 100, 2)}%")\
-# Extract skills
-resume_skills = extract_skills(resume_clean)
-jd_skills = extract_skills(jd_clean)
+print(f"\nATS Score: {round(score * 100, 2)}%")
 
-# Find missing skills
-missing_skills = jd_skills - resume_skills
+# Extract skills from ORIGINAL text (important)
+resume_skills = extract_skills(resume_text)
+jd_skills = extract_skills(jd_text)
 
+# Find missing skills (FIXED)
+missing_skills = [skill for skill in jd_skills if skill not in resume_skills]
+
+# Print results
 print("Missing Skills:", ", ".join(missing_skills))
