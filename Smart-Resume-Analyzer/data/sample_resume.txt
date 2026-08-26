@@ -1,0 +1,4 @@
+John Doe
+Skills: Python, C++, SQL, Machine Learning
+Education: B.Tech Computer Engineering
+Experience: Intern at XYZ Company
